@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XSS Demo</title>
+</head>
+<body>
+    <h1>XSS Demonstration</h1>
+    <p>Current XSS Status: <strong><%= xssEnabled ? "Enabled" : "Disabled" %></strong></p>
+
+    <form action="/submit" method="POST">
+        <label for="userInput">Enter text:</label>
+        <input type="text" id="userInput" name="userInput">
+        <button type="submit">Submit</button>
+    </form>
+
+    <% if (typeof displayText !== 'undefined') { %>
+        <h2>Output:</h2>
+        <div><%= xssEnabled ? displayText : displayText %></div>
+    <% } %>
+
+    <form action="/toggle-xss" method="POST">
+        <button type="submit">Toggle XSS</button>
+    </form>
+</body>
+</html>
