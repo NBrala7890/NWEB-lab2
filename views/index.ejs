@@ -16,7 +16,7 @@
 
     <% if (typeof displayText !== 'undefined') { %>
         <h2>Output:</h2>
-        <div><%= xssEnabled ? displayText : displayText %></div>
+        <div><%- displayText %></div>
     <% } %>
 
     <form action="/toggle-xss" method="POST">
