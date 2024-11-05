@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data</title>
+</head>
+<body>
+    <h1>User Data</h1>
+    
+    <p><%= loggedInMessage %></p>
+    <p>Requested User ID: <strong><%= requestedId %></strong></p>
+    <p>First Name: <%= user.firstname %></p>
+    <p>Last Name: <%= user.lastname %></p>
+    <p>Password: <%= user.password %></p>
+
+    <h2>Broken Access Control</h2>
+    <p>Current Status: <strong><%= brokenAccessEnabled ? "Enabled (Restricted Access)" : "Disabled (Open Access)" %></strong></p>
+
+    <form action="/toggle-access" method="POST">
+        <button type="submit">Toggle Access Control</button>
+    </form>
+</body>
+</html>

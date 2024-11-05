@@ -2,29 +2,61 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-// toggle for XSS vulnerability
-let xssEnabled = false;
+let xssEnabled = false; // Toggle for XSS vulnerability
+let brokenAccessEnabled = false; // Toggle for Broken Access Control vulnerability
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Serve static files (CSS, JS) from the "public" directory
 app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 
+// Sample user data
+const users = {
+    "12345": { firstname: "Alice", lastname: "Smith", password: "password123" },
+    "12346": { firstname: "Bob", lastname: "Brown", password: "password456" },
+    "12347": { firstname: "Charlie", lastname: "Davis", password: "password789" },
+};
+
+// Home route for XSS demonstration
 app.get('/', (req, res) => {
-    res.render('index', { xssEnabled });
+    res.render('index', { xssEnabled, brokenAccessEnabled });
 });
 
 app.post('/submit', (req, res) => {
     const userInput = req.body.userInput;
     let displayText = xssEnabled ? userInput : escapeHTML(userInput);
-    res.render('index', { displayText, xssEnabled });
+    res.render('index', { displayText, xssEnabled, brokenAccessEnabled });
 });
 
 app.post('/toggle-xss', (req, res) => {
     xssEnabled = !xssEnabled;
     res.redirect('/');
+});
+
+// Route for Broken Access Control demonstration
+app.get('/userData/:id', (req, res) => {
+    const requestedId = req.params.id;
+    const loggedInUserId = "12345"; // Assume "12345" is the logged-in user
+    const user = users[requestedId];
+
+    if (!user) {
+        return res.send("User not found");
+    }
+
+    // Display a message showing which user is logged in
+    const loggedInMessage = `User ${loggedInUserId} is logged in`;
+
+    // If Broken Access Control is enabled, only allow access to the logged-in user's data
+    if (brokenAccessEnabled && requestedId !== loggedInUserId) {
+        return res.send("<script>alert('Access Denied');</script>");
+    }
+
+    res.render('userData', { user, requestedId, brokenAccessEnabled, loggedInMessage });
+});
+
+app.post('/toggle-access', (req, res) => {
+    brokenAccessEnabled = !brokenAccessEnabled;
+    res.redirect(`/userData/12345`);
 });
 
 function escapeHTML(str) {
