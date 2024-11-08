@@ -12,9 +12,9 @@ app.set('view engine', 'ejs');
 
 // Sample user data
 const users = {
-    "12345": { firstname: "Alice", lastname: "Smith", password: "password123" },
-    "12346": { firstname: "Bob", lastname: "Brown", password: "password456" },
-    "12347": { firstname: "Charlie", lastname: "Davis", password: "password789" },
+    "12345": { firstname: "Ray", lastname: "Liotta", password: "rayliotta123" },
+    "12346": { firstname: "Robert", lastname: "De Niro", password: "robertdeniro456" },
+    "12347": { firstname: "Joe", lastname: "Pesci", password: "joepesci789" },
 };
 
 // Home route
