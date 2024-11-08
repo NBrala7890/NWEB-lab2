@@ -17,20 +17,25 @@ const users = {
     "12347": { firstname: "Charlie", lastname: "Davis", password: "password789" },
 };
 
-// Home route for XSS demonstration
+// Home route
 app.get('/', (req, res) => {
-    res.render('index', { xssEnabled, brokenAccessEnabled });
+    res.render('home');
+});
+
+// Route for XSS demonstration
+app.get('/xss', (req, res) => {
+    res.render('xss', { xssEnabled, brokenAccessEnabled });
 });
 
 app.post('/submit', (req, res) => {
     const userInput = req.body.userInput;
     let displayText = xssEnabled ? userInput : escapeHTML(userInput);
-    res.render('index', { displayText, xssEnabled, brokenAccessEnabled });
+    res.render('xss', { displayText, xssEnabled, brokenAccessEnabled });
 });
 
 app.post('/toggle-xss', (req, res) => {
     xssEnabled = !xssEnabled;
-    res.redirect('/');
+    res.redirect('/xss');
 });
 
 // Route for Broken Access Control demonstration
